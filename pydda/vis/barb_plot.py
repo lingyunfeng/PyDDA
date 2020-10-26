@@ -230,6 +230,7 @@ def plot_horiz_xsection_barbs_map(Grids, ax=None,
                                   background_field='reflectivity',
                                   level=1,
                                   cmap='pyart_LangRainbow12',
+                                  norm=None,
                                   vmin=None, vmax=None,
                                   u_vel_contours=None,
                                   v_vel_contours=None,
@@ -342,11 +343,16 @@ def plot_horiz_xsection_barbs_map(Grids, ax=None,
     transform = ccrs.PlateCarree()
     if(ax is None):
         ax = plt.axes(projection=transform)
-
-    the_mesh = ax.pcolormesh(grid_lon[:, :], grid_lat[:, :],
-                             grid_bg[level, :, :],
-                             cmap=cmap, transform=transform, zorder=0,
-                             vmin=vmin, vmax=vmax)
+    if(norm is None):
+      the_mesh = ax.pcolormesh(grid_lon[:, :], grid_lat[:, :],
+                               grid_bg[level, :, :],
+                               cmap=cmap, transform=transform, zorder=0,
+                               vmin=vmin, vmax=vmax)
+    else:
+      the_mesh = ax.pcolormesh(grid_lon[:, :], grid_lat[:, :],
+                               grid_bg[level, :, :],
+                               cmap=cmap,norm=norm, transform=transform, zorder=0,
+                               vmin=vmin, vmax=vmax)      
     barb_density_x = int((1/dx)*barb_spacing_x_km)
     barb_density_y = int((1/dy)*barb_spacing_y_km)
 
