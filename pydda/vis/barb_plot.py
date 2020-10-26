@@ -494,6 +494,7 @@ def plot_horiz_xsection_barbs_map(Grids, ax=None,
 def plot_xz_xsection_barbs(Grids, ax=None,
                            background_field='reflectivity', level=1,
                            cmap='pyart_LangRainbow12',
+                           norm=None,
                            vmin=None, vmax=None, u_vel_contours=None,
                            v_vel_contours=None, w_vel_contours=None,
                            wind_vel_contours=None,
@@ -594,10 +595,14 @@ def plot_xz_xsection_barbs(Grids, ax=None,
 
     if(ax is None):
         ax = plt.gca()
-
-    the_mesh = ax.pcolormesh(grid_x[:, level, :], grid_h[:, level, :],
-                             grid_bg[:, level, :], cmap=cmap, vmin=vmin,
-                             vmax=vmax)
+    if(norm is None):
+      the_mesh = ax.pcolormesh(grid_x[:, level, :], grid_h[:, level, :],
+                               grid_bg[:, level, :], cmap=cmap, vmin=vmin,
+                               vmax=vmax)
+    else:
+      the_mesh = ax.pcolormesh(grid_x[:, level, :], grid_h[:, level, :],
+                               grid_bg[:, level, :], cmap=cmap,norm=norm, vmin=vmin,
+                               vmax=vmax)     
     barb_density_x = int((1/dx)*barb_spacing_x_km)
     barb_density_z = int((1/dz)*barb_spacing_z_km)
     ax.barbs(grid_x[::barb_density_z, level, ::barb_density_x],
